@@ -5,6 +5,7 @@ import { LogBox } from 'react-native';
 
 import { FirebaseProvider } from '@/contexts/firebase-context';
 import { store } from '@/redux/store';
+import NetworkInfoModal from '@/components/NetworkInfoModal';
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
@@ -16,10 +17,11 @@ console.error = (...args: any) => {
 
 export default function RootLayout() {
   return (
-    //<FirebaseProvider>
+    <FirebaseProvider>
       <Provider store={store}>
         <Slot />
+        <NetworkInfoModal/>
       </Provider>
-    //</FirebaseProvider>
+    </FirebaseProvider>
   );
 }
