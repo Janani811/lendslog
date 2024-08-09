@@ -13,7 +13,7 @@ interface authState {
   isLoading: boolean;
   otpLoading: boolean;
   otpVerifyLoading: boolean;
-  user: userSchemaType | null; 
+  user: userSchemaType | null;
   isAuthenticateLoading: boolean;
 }
 const initialState: authState = {
@@ -215,9 +215,7 @@ export const updateProfile =
   ): ThunkAction<void, RootState, unknown, UnknownAction> =>
   async dispatch => {
     dispatch(setIsLoading(true));
-
     try {
-      console.log("first", data)
       const response = await authApi.editProfile(data);
 
       const { user } = response.data;
@@ -232,6 +230,37 @@ export const updateProfile =
       }
     } finally {
       dispatch(setIsLoading(false));
+    }
+  };
+
+export const enableNotificationToken =
+  (): ThunkAction<void, RootState, unknown, UnknownAction> => async dispatch => {
+    try {
+      const token = await AsyncStorage.getItem('@fcm_token');
+      if(token){
+       await authApi.enableNotificationToken({ token });
+      }
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.error(error)
+      }
+    }
+  };
+
+export const disableNotificationToken =
+  (callBack: ()=> void): ThunkAction<void, RootState, unknown, UnknownAction> => async dispatch => {
+    try {
+      const token = await AsyncStorage.getItem('@fcm_token');
+      if(token){
+        await authApi.disableNotificationToken({ token });
+      }
+      if(callBack){
+        callBack()
+      }
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.error(error)
+      }
     }
   };
 export const authSelector = (state: { auth: authState }) => state.auth;
