@@ -19,7 +19,7 @@ import Spacer from '@/components/Spacer';
 import AuthLink from '@/components/AuthLink';
 import SafeAreaViewComponent from '@/components/SafeAreaView';
 
-import { logIn, setError } from '@/redux/slices/auth/authSlice';
+import { enableNotificationToken, logIn, setError } from '@/redux/slices/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { phoneValidation } from '@/utils/Validation';
 import { useIsFocused } from '@react-navigation/native';
@@ -67,6 +67,7 @@ export default function SignIn() {
       logIn({ phone, password }, () => {
         reset();
         dispatch(setError(null));
+        dispatch(enableNotificationToken());
         router.replace('/dashboard');
       })
     );

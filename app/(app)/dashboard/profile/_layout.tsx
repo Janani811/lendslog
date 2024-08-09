@@ -19,7 +19,7 @@ import PopupMenu from '@/components/PopupMenu';
 import ProfileForm from './ProfileForm';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { logout } from '@/redux/slices/auth/authSlice';
+import { disableNotificationToken, logout } from '@/redux/slices/auth/authSlice';
 
 export default function Profile() {
   const { user } = useAppSelector(state => state.auth);
@@ -28,11 +28,26 @@ export default function Profile() {
   const router = useRouter();
 
   const menuActions = [
-    { id: 1, title: 'Edit', action: () => setIsClicked(true), icon: require('@/assets/icons/edit.png') },
+    {
+      id: 1,
+      title: 'Edit',
+      action: () => setIsClicked(true),
+      icon: require('@/assets/icons/edit.png'),
+    },
     {
       id: 2,
       title: 'Logout',
-      action: () => dispatch(logout(() => router.replace('(auth)/login'))),
+      action: () => {
+        dispatch(
+          disableNotificationToken(() => {
+            dispatch(
+              logout(() => {
+                router.replace('(auth)/login');
+              })
+            );
+          })
+        );
+      },
       icon: require('@/assets/icons/logout.png'),
     },
   ];
@@ -51,11 +66,10 @@ export default function Profile() {
             <View style={styles.mainContainer}>
               <View style={styles.actionsContainer}>
                 <TouchableOpacity
-                  accessibilityRole="button" 
+                  accessibilityRole="button"
                   onPress={() => {
                     router.back();
-                  }}
-                >
+                  }}>
                   <Image source={require('@/assets/icons/back.png')} />
                 </TouchableOpacity>
                 {menuActions.length ? <PopupMenu actions={menuActions} /> : null}
