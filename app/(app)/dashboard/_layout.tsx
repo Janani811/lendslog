@@ -1,9 +1,8 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { View, Dimensions, Image } from 'react-native';
+import { Image } from 'react-native';
 import BottomTab from '@/components/BottomTabBar';
 import SafeAreaViewComponent from '@/components/SafeAreaView';
-import { FirebaseProvider } from '@/contexts/firebase-context';
 
 const ROUTES: {
   name: string;
@@ -45,7 +44,6 @@ const ROUTES: {
 
 export default function TabLayout() {
   return (
-    <FirebaseProvider>
       <SafeAreaViewComponent>
         <Tabs
           screenOptions={{
@@ -66,6 +64,5 @@ export default function TabLayout() {
           ))}
         </Tabs>
       </SafeAreaViewComponent>
-    </FirebaseProvider>
   );
 }

@@ -7,6 +7,7 @@ import { store } from '@/redux/store';
 import NetworkInfoModal from '@/components/NetworkInfoModal';
 import { requestUserPermission } from '@/utils/notification-service';
 import { useEffect } from 'react';
+import { FirebaseProvider } from '@/contexts/firebase-context';
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
@@ -21,9 +22,11 @@ export default function RootLayout() {
     requestUserPermission();
   }, []);
   return (
-    <Provider store={store}>
-      <Slot />
-      <NetworkInfoModal />
-    </Provider>
+    <FirebaseProvider>
+      <Provider store={store}>
+        <Slot />
+        <NetworkInfoModal />
+      </Provider>
+    </FirebaseProvider>
   );
 }
