@@ -39,7 +39,7 @@ export interface PendingInstallments {
   it_installement_status: number;
   it_term_amount: number;
 }
-export interface Notifications {
+export interface INotifications {
   nt_user_id: number;
   nt_id?: number;
   nt_status?: number;

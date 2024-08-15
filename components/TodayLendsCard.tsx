@@ -14,7 +14,7 @@ const TodayLendCard = ({
   return (
     <View
       style={{
-        backgroundColor: '#14141D',
+        backgroundColor: '#1C1C29',
         width: '100%',
         borderRadius: 10,
         padding: 16,
@@ -28,7 +28,7 @@ const TodayLendCard = ({
         <Text style={styles.content}>
           <Text style={styles.subContent}>{ld_borrower_name} </Text>
           <Text>has </Text>
-          <Text style={[styles.subContent, { color: '#00B0B0' }]}>
+          <Text style={[styles.subContent, { color: 'rgba(255,200,58,0.78)' }]}>
             {pending_installments.length}{' '}
           </Text>
           <Text>Pending payments till now</Text>
@@ -96,13 +96,13 @@ const styles = StyleSheet.create({
 
   subContent: { fontFamily: 'Inter-700', marginLeft: 4 },
   view: {
-    backgroundColor: '#00B0B0',
+    backgroundColor: '#323448',
     borderRadius: 4,
     paddingVertical: 5,
     paddingHorizontal: 8,
     opacity: 0.8,
   },
-  viewText: { fontSize: 12, color: '#000000', fontFamily: 'Inter-600' },
+  viewText: { fontSize: 12, color: '#dcdcdc', fontFamily: 'Inter-600' },
   structure: {
     display: 'flex',
     flexDirection: 'row',

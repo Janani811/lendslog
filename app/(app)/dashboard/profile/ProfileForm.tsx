@@ -81,7 +81,6 @@ export default function ProfileForm({
   }, [isFocused, user]);
 
   const onSubmit = (data: userSchemaType) => {
-    console.log(data);
     dispatch(
       updateProfile(data, (user: userSchemaType) => {
         resetData(user);
@@ -264,7 +263,7 @@ export default function ProfileForm({
             disabled={!isDirty || isLoading}
             onPress={handleSubmit(onSubmit)}>
             {isLoading ? (
-              <ActivityIndicator animating color={'#14141D'} style={styles.loader} />
+              <ActivityIndicator animating color={'#1C1C29'} style={styles.loader} />
             ) : null}
             <Text style={[styles.title, isLoading ? styles.textDisable : {}]}>Edit</Text>
           </TouchableOpacity>
@@ -301,12 +300,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: '#14141D',
+    color: '#1C1C29',
     fontSize: 16,
     fontFamily: 'Inter-600',
   },
   disable: {
-    opacity: 0.4,
+    opacity: 0.5,
   },
   textDisable: { opacity: 0 },
   errorContainer: {

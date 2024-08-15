@@ -189,7 +189,7 @@ const Register = () => {
                     onPress={handleSubmit(register)}
                     disabled={!isValid || isLoading}>
                     {isLoading ? (
-                      <ActivityIndicator animating color={'#14141D'} style={styles.loader} />
+                      <ActivityIndicator animating color={'#1C1C29'} style={styles.loader} />
                     ) : null}
                     <Text style={[styles.title, isLoading ? styles.textDisable : {}]}>Sign Up</Text>
                   </TouchableOpacity>
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: '#14141D',
+    color: '#1C1C29',
     fontSize: 16,
     fontFamily: 'Inter-600',
   },

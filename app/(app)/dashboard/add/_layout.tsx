@@ -105,7 +105,7 @@ export default function AddLends() {
                 <Text style={styles.label}>Add Lend Details</Text>
               </View>
               <View>
-                <View style={[styles.sectionContainer, { marginTop: 25 }]}>
+                <View style={[styles.sectionContainer, { marginTop: 15 }]}>
                   <View style={[styles.sectionTitleContainer]}>
                     <Text style={[styles.sectionTitle]}>Borrower Details</Text>
                   </View>
@@ -467,7 +467,7 @@ export default function AddLends() {
                     disabled={!isValid || isLoading}
                     onPress={handleSubmit(onSubmit)}>
                     {isLoading ? (
-                      <ActivityIndicator animating color={'#14141D'} style={styles.loader} />
+                      <ActivityIndicator animating color={'#1C1C29'} style={styles.loader} />
                     ) : null}
                     <Text style={[styles.title, isLoading ? styles.textDisable : {}]}>Add</Text>
                   </TouchableOpacity>
@@ -517,12 +517,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: '#14141D',
+    color: '#1C1C29',
     fontSize: 16,
     fontFamily: 'Inter-600',
   },
   disable: {
-    opacity: 0.4,
+    opacity: 0.5,
   },
   textDisable: { opacity: 0 },
   errorContainer: {
@@ -552,9 +552,10 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    color: 'rgba(255,200,58,0.78)',
+    color: '#b7b6c1',
     marginBottom: 2,
-    fontFamily: 'Inter-500',
+    fontFamily: 'Inter-700',
+    textDecorationLine: 'underline'
   },
   sectionTitleContainer: {
     marginBottom: 10,

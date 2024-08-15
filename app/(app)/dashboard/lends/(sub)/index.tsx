@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import HeaderWithCount from '@/components/HeaderWithCount';
@@ -7,13 +7,14 @@ import { ThemedView } from '@/components/ThemedView';
 import LendsCard, { LendsCardProps } from '@/components/LendsCard';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { getAllLends } from '@/redux/slices/lends/lendsSlice';
+import { getAllLends, setAllLends } from '@/redux/slices/lends/lendsSlice';
 import { lendsSchemaType } from '@/utils/schema';
 import Spacer from '@/components/Spacer';
+import Emptystate from '@/components/Emptystate';
 
 export default function index() {
   const dispatch = useAppDispatch();
-  const { allLends } = useAppSelector(state => state.lends);
+  const { allLends, isLoading } = useAppSelector(state => state.lends);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -21,6 +22,35 @@ export default function index() {
       dispatch(getAllLends());
     }
   }, [isFocused]);
+
+  if (isLoading) {
+    return (
+      <ThemedView
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <ActivityIndicator size="large" color="#FFCA3A" />
+      </ThemedView>
+    );
+  }
+  // Empty state
+  if (!isLoading && !allLends.length) {
+    return (
+      <ThemedView
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Emptystate
+          title="No lends found!"
+          description="No lends here yet! Once you start lending, all your items will appear in this space."
+        />
+      </ThemedView>
+    );
+  }
 
   return (
     <ThemedView style={{ flex: 1 }}>

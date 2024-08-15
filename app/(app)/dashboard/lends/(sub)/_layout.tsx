@@ -29,7 +29,7 @@ function MyTabBar({ state, descriptors, navigation }: any) {
         justifyContent: 'space-between',
         alignItems: 'center',
         elevation: 10,
-        backgroundColor: '#14141D',
+        backgroundColor: '#1C1C29',
         padding: 10,
         marginVertical: 15,
       }}>
@@ -127,7 +127,7 @@ export default function Layout() {
 
 const styles = StyleSheet.create({
   activeColor: {
-    backgroundColor: 'rgba(0, 176, 176, 0.6902)',
+    backgroundColor: '#323448',
     borderRadius: 4,
   },
 });

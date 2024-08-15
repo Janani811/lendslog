@@ -1,6 +1,4 @@
 import CustomCheckBox from '@/components/CustomCheckBox';
-import CustomDatePicker from '@/components/CustomDatePicker';
-import CustomRadioButton from '@/components/CustomRadioButton';
 import { CustomSelectInput } from '@/components/CustomSelectInput';
 import DueCard from '@/components/DueCard';
 import HeaderWithCount from '@/components/HeaderWithCount';
@@ -10,7 +8,7 @@ import Spacer from '@/components/Spacer';
 import { ThemedView } from '@/components/ThemedView';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { edit, setCurrentLend, setError } from '@/redux/slices/lends/lendsSlice';
-import { interestList, paymentTerms, suretyType } from '@/utils/common-data';
+import { suretyType } from '@/utils/common-data';
 import { EditLendsSchemaType, EditLendsSchema, lendsSchemaType } from '@/utils/schema';
 import { IinstallmentTimelines } from '@/utils/types/lends';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -429,7 +427,7 @@ export default function DetailsScreen() {
                     disabled={!isDirty || isLoading}
                     onPress={handleSubmit(onSubmit)}>
                     {isLoading ? (
-                      <ActivityIndicator animating color={'#14141D'} style={styles.loader} />
+                      <ActivityIndicator animating color={'#1C1C29'} style={styles.loader} />
                     ) : null}
                     <Text style={[styles.title, isLoading ? styles.textDisable : {}]}>Update</Text>
                   </TouchableOpacity>
@@ -508,12 +506,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: '#14141D',
+    color: '#1C1C29',
     fontSize: 16,
     fontFamily: 'Inter-600',
   },
   disable: {
-    opacity: 0.4,
+    opacity: 0.5,
   },
   textDisable: { opacity: 0 },
   errorContainer: {
@@ -543,9 +541,10 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    color: 'rgba(255,200,58,0.78)',
+    color: '#b7b6c1',
     marginBottom: 2,
-    fontFamily: 'Inter-500',
+    fontFamily: 'Inter-700',
+    textDecorationLine: "underline"
   },
   sectionTitleContainer: {
     marginBottom: 10,

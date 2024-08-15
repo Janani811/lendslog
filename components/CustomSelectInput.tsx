@@ -58,9 +58,9 @@ const styles = StyleSheet.create({
   },
   boxStyles: {
     borderWidth: 0,
-    borderRadius: 10,
+    borderRadius: 6,
     padding: 0,
-    backgroundColor: '#14141d',
+    backgroundColor: '#1C1C29',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -68,10 +68,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-300',
     color: '#FFFFFF',
   },
-  dropdownStyles: { backgroundColor: '#14141D', borderWidth: 0 },
+  dropdownStyles: { backgroundColor: '#1C1C29', borderWidth: 0 },
   inputStyles: {
     color: '#c7c7c7',
-    paddingVertical: Platform.OS === 'android' ? 4 : 6,
+    paddingVertical: Platform.OS === 'android' ? 2 : 6,
   },
   dropdownTextStyles: {
     color: '#c7c7c7',

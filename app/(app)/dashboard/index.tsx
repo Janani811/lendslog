@@ -6,15 +6,16 @@ import { ThemedView } from '@/components/ThemedView';
 import SafeAreaViewComponent from '@/components/SafeAreaView';
 import HeaderWithCount from '@/components/HeaderWithCount';
 import TodayLendCard from '@/components/TodayLendsCard';
+import Spacer from '@/components/Spacer';
+import Emptystate from '@/components/Emptystate';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getTodayLends, lendsSelector } from '@/redux/slices/lends/lendsSlice';
 
 import { TodayLends } from '@/utils/types/lends';
-import Spacer from '@/components/Spacer';
 
 export default function HomeScreen() {
-  const { todayLends } = useAppSelector(lendsSelector);
+  const { todayLends, isLoading } = useAppSelector(lendsSelector);
   const dispatch = useAppDispatch();
   const isFocused = useIsFocused();
 
@@ -23,6 +24,23 @@ export default function HomeScreen() {
       dispatch(getTodayLends());
     }
   }, [isFocused]);
+
+  // Empty state
+  if (!isLoading && !todayLends.length) {
+    return (
+      <ThemedView
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Emptystate
+          title="No Pending installments found!"
+          description="You have no installments pending right now."
+        />
+      </ThemedView>
+    );
+  }
 
   return (
     <SafeAreaViewComponent>

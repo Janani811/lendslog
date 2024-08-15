@@ -66,7 +66,7 @@ export default NetworkInfoModal;
 
 const styles = StyleSheet.create({
   modal: {
-    backgroundColor: '#14141D',
+    backgroundColor: '#1C1C29',
     width: deviceWidth() - 60,
     borderRadius: 10,
     paddingVertical: 30,
