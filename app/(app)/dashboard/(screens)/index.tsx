@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { StatusBar, View, FlatList, Platform } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 import { ThemedView } from '@/components/ThemedView';
 import SafeAreaViewComponent from '@/components/SafeAreaView';
@@ -10,7 +11,7 @@ import Spacer from '@/components/Spacer';
 import Emptystate from '@/components/Emptystate';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { getTodayLends, lendsSelector } from '@/redux/slices/lends/lendsSlice';
+import { getTodayLends, lendsSelector, payInstallment } from '@/redux/slices/lends/lendsSlice';
 
 import { TodayLends } from '@/utils/types/lends';
 
@@ -42,6 +43,17 @@ export default function HomeScreen() {
     );
   }
 
+  const onPress = ({ it_id, ld_id }: { it_id: number; ld_id: number }) => {
+    dispatch(
+      payInstallment(it_id, ld_id, () => {
+        Toast.show({
+          type: 'success', 
+          text1: 'Installment pending paid status updated successfully',
+        });
+      })
+    );
+  };
+
   return (
     <SafeAreaViewComponent>
       <ThemedView style={{ flex: 1, paddingTop: StatusBar.currentHeight, paddingHorizontal: 20 }}>
@@ -55,7 +67,7 @@ export default function HomeScreen() {
             scrollEnabled={true}
             ItemSeparatorComponent={() => <Spacer height={12} />}
             renderItem={({ item }: { item: TodayLends }) => {
-              return <TodayLendCard {...item} />;
+              return <TodayLendCard {...item} onCheck={onPress} />;
             }}
             keyExtractor={(item: any, index: number) => item.ld_id + index}
             ListFooterComponent={() => <Spacer height={60} />}

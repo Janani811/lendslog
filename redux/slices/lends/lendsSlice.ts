@@ -110,8 +110,8 @@ export const LendsSlice = createSlice({
     },
     // clearLend(state) {
     //   state.lends = null;
-    // },'   
-     setTodayNotifications(state, action) {
+    // },'
+    setTodayNotifications(state, action) {
       state.todayNotifications = action.payload;
     },
     setOlderNotifications(state, action) {
@@ -134,7 +134,7 @@ export const {
   setEditLend,
   setTodayLends,
   setTodayNotifications,
-  setOlderNotifications
+  setOlderNotifications,
 } = LendsSlice.actions;
 
 export const add =
@@ -159,6 +159,7 @@ export const add =
       dispatch(setIsLoading(false));
     }
   };
+
 export const edit =
   (
     data: EditLendsSchemaType,
@@ -238,9 +239,7 @@ export const getTodayLends =
     }
   };
 
-
-
-  export const getAllNotifications =
+export const getAllNotifications =
   (): ThunkAction<void, RootState, unknown, UnknownAction> => async dispatch => {
     try {
       dispatch(setIsLoading(true));
@@ -257,6 +256,36 @@ export const getTodayLends =
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         dispatch(setError(error?.response?.data?.message || 'Something went wrong.'));
+      }
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };
+
+export const payInstallment =
+  (
+    it_id: number,
+    ld_id: number,
+    callback: () => void
+  ): ThunkAction<void, RootState, unknown, UnknownAction> =>
+  async dispatch => {
+    dispatch(setIsLoading(true));
+
+    try {
+      const response = await lendsApi.payInstallment(it_id, ld_id);
+      const { todayLends } = response.data;
+
+      if (todayLends.length) {
+        dispatch(setTodayLends(todayLends));
+      } else {
+        dispatch(setTodayLends([]));
+      }
+      if (callback) {
+        callback();
+      }
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        dispatch(setError(error?.response?.data?.error || 'Something went wrong.'));
       }
     } finally {
       dispatch(setIsLoading(false));

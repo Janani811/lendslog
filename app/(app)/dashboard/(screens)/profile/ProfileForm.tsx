@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -83,6 +84,10 @@ export default function ProfileForm({
   const onSubmit = (data: userSchemaType) => {
     dispatch(
       updateProfile(data, (user: userSchemaType) => {
+        Toast.show({
+          type: 'success', 
+          text1: 'Profile updated successfully!',
+        });
         resetData(user);
         setIsClicked((state: any) => !state);
         dispatch(setError(null));

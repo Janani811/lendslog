@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { TodayLends } from '@/utils/types/lends';
+import CustomCheckBox from './CustomCheckBox';
 
 const TodayLendCard = ({
   ld_borrower_name,
@@ -9,8 +10,11 @@ const TodayLendCard = ({
   pending_installments,
   total_pending_amount,
   ld_borrower_phoneno,
+  ld_id,
+  onCheck,
 }: TodayLends) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isChecked, setIsChecked] = useState(0);
   return (
     <View
       style={{
@@ -24,7 +28,7 @@ const TodayLendCard = ({
         shadowRadius: 2,
         elevation: -4,
       }}>
-      <View style={[styles.structure, {width: "85%"}]}>
+      <View style={[styles.structure, { width: '85%' }]}>
         <Text style={styles.content}>
           <Text style={styles.subContent}>{ld_borrower_name} </Text>
           <Text>has </Text>
@@ -58,8 +62,21 @@ const TodayLendCard = ({
           {pending_installments.map((item, index) => (
             <View key={`${item.it_id}` + `${index}`} style={{ marginTop: 4 }}>
               <View style={styles.structure}>
-                <Text style={styles.subText}>{item.it_installment_date}</Text>
-                <Text style={[styles.subText, { fontFamily: 'Inter-700' }]}>{item.it_term_amount}</Text>
+                <View style={{width: "50%"}}>
+                <CustomCheckBox
+                  label={item.it_installment_date}
+                  fillColor="rgba(255, 200, 58, 0.8)"
+                  onChange={() => {
+                    setIsChecked(item.it_id);
+                    onCheck({ it_id: item.it_id, ld_id: ld_id });
+                  }}
+                  isChecked={isChecked == item.it_id}
+                  size={20}
+                />
+                </View>
+                <Text style={[styles.subText, { fontFamily: 'Inter-700' }]}>
+                  {item.it_term_amount}
+                </Text>
               </View>
             </View>
           ))}

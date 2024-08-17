@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   },
   count: {
     fontSize: 24,
+    fontFamily: 'Inter-500',
     color: 'rgba(255,200,58,0.78)',
   },
   countSpan: {
