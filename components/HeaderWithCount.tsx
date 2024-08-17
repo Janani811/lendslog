@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
   },
   count: {
     fontSize: 24,
+    fontFamily: 'Inter-500',
     color: 'rgba(255,200,58,0.78)',
-    padding: 2,
   },
   countSpan: {
     // backgroundColor: 'rgba(255,200,58,0.78)',
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     marginLeft: 3,
   },
   subTitle: {
-    fontSize: 20,
-    color: '#c7c7c7',
-    fontFamily: 'Inter-500',
+    fontSize: 18,
+    color: '#b7b6c1',
+    fontFamily: 'Inter-700',
   },
 });

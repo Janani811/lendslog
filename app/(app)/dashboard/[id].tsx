@@ -1,46 +1,51 @@
-import React, { useEffect } from 'react';
-import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useIsFocused } from '@react-navigation/native';
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  FlatList,
+  StatusBar,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
+import Toast from 'react-native-toast-message';
 
-import Input from '@/components/Input';
-import Spacer from '@/components/Spacer';
-// import AuthLink from '@/components/AuthLink';
-import SafeAreaViewComponent from '@/components/SafeAreaView';
-import { ThemedView } from '@/components/ThemedView';
-import CustomRadioButton from '@/components/CustomRadioButton';
 import CustomCheckBox from '@/components/CustomCheckBox';
 import { CustomSelectInput } from '@/components/CustomSelectInput';
+import DueCard from '@/components/DueCard';
+import HeaderWithCount from '@/components/HeaderWithCount';
+import Input from '@/components/Input';
+import SafeAreaViewComponent from '@/components/SafeAreaView';
+import Spacer from '@/components/Spacer';
+import { ThemedView } from '@/components/ThemedView';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { add, setError } from '@/redux/slices/lends/lendsSlice';
+import { edit, setCurrentLend, setError } from '@/redux/slices/lends/lendsSlice';
 
-import { lendsSchema, lendsSchemaType } from '@/utils/schema';
-import { interestList, paymentTerms, suretyType } from '@/utils/common-data';
-import CustomDatePicker from '@/components/CustomDatePicker';
+import { suretyType } from '@/utils/common-data';
+import { EditLendsSchemaType, EditLendsSchema, lendsSchemaType } from '@/utils/schema';
+import { IinstallmentTimelines } from '@/utils/types/lends';
 
-export default function AddLends() {
-  const dispatch = useAppDispatch();
+export default function DetailsScreen(props:any) {
+  const { id } = useLocalSearchParams();
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
   const isFocused = useIsFocused();
+  const dispatch = useAppDispatch();
   const router = useRouter();
-  const { isLoading, error } = useAppSelector(state => state.lends);
-
+  const { allLends, currentLend, isLoading, error } = useAppSelector(state => state.lends);
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isDirty },
     reset,
     watch,
   } = useForm({
@@ -57,33 +62,79 @@ export default function AddLends() {
       ld_is_surety: false,
       ld_surety_type: 0,
       ld_surety_notes: '',
-      ld_lend_amount: '',
-      ld_interest_rate: 0,
-      ld_payment_term: 0,
-      ld_total_weeks_or_month: '',
-      ld_start_date: '',
       // ld_payment_type: '',
     },
-    resolver: zodResolver(lendsSchema),
+    resolver: zodResolver(EditLendsSchema),
   });
 
   useEffect(() => {
+    if (id && isFocused) {
+      const findLend = allLends.find(item => item.ld_id === Number(id));
+      if (findLend) {
+        dispatch(setCurrentLend(findLend));
+        resetForm(findLend);
+      }
+      setTimeout(() => {
+        setLoading(false);
+      }, 600);
+    }
     return () => {
+      dispatch(setCurrentLend(null));
       dispatch(setError(null));
     };
-  }, [isFocused]);
+  }, [id, isFocused, allLends]);
 
-  const onSubmit = (data: lendsSchemaType) => {
-    dispatch(
-      add(data, () => {
-        reset();
-        dispatch(setError(null));
-        router.replace('/dashboard/lends');
-      })
-    );
+  const resetForm = useCallback(
+    (currentLend: lendsSchemaType) => {
+      reset({
+        ld_borrower_name: currentLend?.ld_borrower_name || '',
+        ld_borrower_phoneno: currentLend?.ld_borrower_phoneno || '',
+        ld_borrower_address: currentLend?.ld_borrower_address || '',
+        ld_borrower_notes: currentLend?.ld_borrower_notes || '',
+        ld_is_nominee: currentLend?.ld_is_nominee || false,
+        ld_nominee_name: currentLend?.ld_nominee_name || '',
+        ld_nominee_phoneno: currentLend?.ld_nominee_phoneno || '',
+        ld_nominee_address: currentLend?.ld_nominee_address || '',
+        ld_nominee_notes: currentLend?.ld_nominee_notes || '',
+        ld_is_surety: currentLend?.ld_is_surety,
+        ld_surety_type: currentLend?.ld_surety_type || 0,
+        ld_surety_notes: currentLend?.ld_surety_notes || '',
+      });
+    },
+    [currentLend]
+  );
+
+  const onSubmit = (data: EditLendsSchemaType) => {
+    if (currentLend?.ld_id)
+      dispatch(
+        edit(data, currentLend?.ld_id, lend => {
+          Toast.show({
+            type: 'success', 
+            text1: 'Lend added successfully!',
+          });
+          dispatch(setError(null));
+          resetForm(lend);
+        })
+      );
   };
 
-  // console.log('---------- ERROR -------- \n', JSON.stringify(errors, null, 2));
+  if (loading) {
+    return (
+      <ThemedView style={styles.container_loading}>
+        <ActivityIndicator size="large" color="#FFCA3A" />
+      </ThemedView>
+    );
+  }
+  if (!currentLend) {
+    return (
+      <ThemedView style={styles.container_loading}>
+        <Text style={{ color: '#FFCA3A', fontSize: 24, fontFamily: 'Inter-600' }}>
+          Item not found
+        </Text>
+      </ThemedView>
+    );
+  }
+
   return (
     <KeyboardAvoidingView
       {...(Platform.OS === 'ios' ? { behavior: 'padding' } : {})}
@@ -94,15 +145,37 @@ export default function AddLends() {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps={'always'}>
           <ThemedView
-            style={{ flex: 1,  paddingTop: StatusBar.currentHeight, paddingHorizontal: 10 }}>
-             <View style={styles.formContainer}>
+            style={{ flex: 1, paddingTop: StatusBar.currentHeight, paddingHorizontal: 10 }}>
+            <View style={styles.formContainer}>
               {error && (
                 <View style={styles.errorContainer}>
                   <Text style={styles.error}>{error}</Text>
                 </View>
               )}
               <View style={styles.header}>
-                <Text style={styles.label}>Add Lend Details</Text>
+                <Text style={styles.label} onPress={()=>{
+                  if(router.canGoBack()){
+                    router.back();
+                  }
+                }}>Edit Lend Details</Text>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    marginTop: 12,
+                    alignItems: 'flex-start',
+                    gap: 6,
+                  }}>
+                  <Image source={require('@/assets/icons/info.png')} />
+                  <Text
+                    style={{
+                      fontFamily: 'Inter-300',
+                      color: '#c7c7c7',
+                      fontSize: 14,
+                    }}>
+                    Scroll down to see the full list of the current lends installement
+                  </Text>
+                </View>
               </View>
               <View>
                 <View style={[styles.sectionContainer, { marginTop: 25 }]}>
@@ -187,108 +260,7 @@ export default function AddLends() {
                     name="ld_borrower_notes"
                   />
                 </View>
-                <View style={[styles.sectionContainer, { marginTop: 25 }]}>
-                  <View style={[styles.sectionTitleContainer]}>
-                    <Text style={[styles.sectionTitle]}>Lend Details</Text>
-                  </View>
-                  <Controller
-                    control={control}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        placeholder="Lend amount"
-                        label="Lend Amount"
-                        keyboardType="numeric"
-                        onBlur={field.onBlur}
-                        onChangeText={field.onChange}
-                        error={errors.ld_lend_amount?.message}
-                        borderLess
-                      />
-                    )}
-                    name="ld_lend_amount"
-                  />
-                  <Spacer height={21} />
-                  <Controller
-                    control={control}
-                    render={({ field }) => (
-                      <CustomSelectInput
-                        placeholder="Choose interest rate"
-                        value={field.value}
-                        label="Interest Rate"
-                        onChange={data => {
-                          field.onChange(data);
-                        }}
-                        options={interestList}
-                      />
-                    )}
-                    name="ld_interest_rate"
-                  />
-                  {errors.ld_interest_rate?.message ? (
-                    <Text style={styles.errorMessage}>{errors.ld_interest_rate?.message}</Text>
-                  ) : null}
-                  {/* <Spacer height={21} />
-                  <Controller
-                    control={control}
-                    render={({ field }) => (
-                      <CustomSelectInput
-                        label="Payment Type"
-                        options={paymentTypes}
-                        onChange={data => {
-                          field.onChange(data);
-                        }}
-                      />
-                    )}
-                    name="ld_payment_type"
-                  />
-                  {errors.ld_payment_type?.message ? (
-                    <Text style={styles.errorMessage}>{errors.ld_payment_type?.message}</Text>
-                  ) : null} */}
-                  <Spacer height={21} />
-                  <Controller
-                    control={control}
-                    render={({ field }) => (
-                      <CustomRadioButton
-                        label="Payment Term"
-                        value={field.value}
-                        options={paymentTerms}
-                        onChange={data => {
-                          field.onChange(data);
-                        }}
-                        disabled={field.disabled}
-                      />
-                    )}
-                    name="ld_payment_term"
-                  />
-                  {errors.ld_payment_term?.message ? (
-                    <Text style={styles.errorMessage}>{errors.ld_payment_term?.message}</Text>
-                  ) : null}
-                  <Spacer height={10} />
-                  <Controller
-                    control={control}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        placeholder="Total number of weeks or months"
-                        label="Total Weeks or Months"
-                        keyboardType="numeric"
-                        onBlur={field.onBlur}
-                        onChangeText={field.onChange}
-                        error={errors.ld_total_weeks_or_month?.message}
-                        borderLess
-                      />
-                    )}
-                    name="ld_total_weeks_or_month"
-                  />
-                  <Spacer height={25} />
-                  <Controller
-                    control={control}
-                    render={({ field }) => (
-                      <CustomDatePicker onDateChange={(data)=>field.onChange(data)} value={field.value} label="Payment Start Date" placeholder="DD-MM-YYYY" error={errors.ld_start_date?.message} />
-                    )}
-                    name="ld_start_date"
-                  />
-                            
-                </View>
+
                 <View style={[styles.sectionContainer, { marginTop: 25 }]}>
                   <View style={[styles.sectionTitleContainer]}>
                     <Text style={[styles.sectionTitle]}>Nominee Details</Text>
@@ -463,18 +435,46 @@ export default function AddLends() {
                 <Spacer height={35} />
                 <View style={styles.btnContainer}>
                   <TouchableOpacity
-                    style={[styles.button, !isValid || isLoading ? styles.disable : {}]}
-                    disabled={!isValid || isLoading}
+                    style={[styles.button, !isDirty || isLoading ? styles.disable : {}]}
+                    disabled={!isDirty || isLoading}
                     onPress={handleSubmit(onSubmit)}>
                     {isLoading ? (
-                      <ActivityIndicator animating color={'#14141D'} style={styles.loader} />
+                      <ActivityIndicator animating color={'#1C1C29'} style={styles.loader} />
                     ) : null}
-                    <Text style={[styles.title, isLoading ? styles.textDisable : {}]}>Add</Text>
+                    <Text style={[styles.title, isLoading ? styles.textDisable : {}]}>Update</Text>
                   </TouchableOpacity>
                 </View>
-                <Spacer height={50} />
               </View>
             </View>
+            <Spacer height={25} />
+            <View
+              style={{
+                marginHorizontal: 15,
+                marginVertical: 10,
+                borderTopWidth: 0.2,
+                borderTopColor: '#ffffff',
+                paddingTop: 10,
+              }}>
+              <HeaderWithCount
+                title="Installments List"
+                subTitle
+                count={currentLend.installmentTimelines?.length}
+                countText="installments"
+              />
+            </View>
+            <FlatList
+              bounces={false}
+              style={{ marginBottom: 20, paddingBottom: 20 }}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingHorizontal: 15 }}
+              scrollEnabled={false}
+              ItemSeparatorComponent={() => <Spacer height={10} />}
+              data={currentLend.installmentTimelines}
+              renderItem={({ item }: { item: IinstallmentTimelines }) => {
+                return <DueCard {...item} />;
+              }}
+              keyExtractor={(item: IinstallmentTimelines, index: number) => item.it_id + 'log'}
+            />
           </ThemedView>
         </ScrollView>
       </SafeAreaViewComponent>
@@ -483,8 +483,10 @@ export default function AddLends() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container_loading: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   header: {
     display: 'flex',
@@ -492,9 +494,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   formContainer: {
-    justifyContent: 'center',
     paddingHorizontal: 15,
-    marginTop: 10
+    marginTop: 10,
   },
   sectionContainer: {
     marginTop: 20,
@@ -517,12 +518,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: '#14141D',
+    color: '#1C1C29',
     fontSize: 16,
     fontFamily: 'Inter-600',
   },
   disable: {
-    opacity: 0.4,
+    opacity: 0.5,
   },
   textDisable: { opacity: 0 },
   errorContainer: {
@@ -552,9 +553,10 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    color: 'rgba(255,200,58,0.78)',
+    color: '#b7b6c1',
     marginBottom: 2,
-    fontFamily: 'Inter-500',
+    fontFamily: 'Inter-700',
+    textDecorationLine: "underline"
   },
   sectionTitleContainer: {
     marginBottom: 10,

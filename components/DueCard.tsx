@@ -17,7 +17,7 @@ const DueCard = ({
   return (
     <View
       style={{
-        backgroundColor: '#14141D',
+        backgroundColor: '#1C1C29',
         width: '100%',
         borderRadius: 10,
         padding: 10,

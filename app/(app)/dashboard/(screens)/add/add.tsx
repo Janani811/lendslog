@@ -41,7 +41,7 @@ const AddBorrower = ({ onSubmit }: any) => {
 
 const styles = StyleSheet.create({
   input: {
-    backgroundColor: '#14141D',
+    backgroundColor: '#1C1C29',
     fontSize: 16,
     marginBottom: 15,
     padding: 5,

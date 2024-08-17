@@ -23,7 +23,7 @@ const Input = forwardRef(function MyInput(
   props: ExtraInputProps & TextInputProps,
   ref: React.Ref<TextInput>
 ) {
-  const { label, borderLess, isTextBox, isPassword, error, isTitle, editable, ...otherProps } =
+  const { label, borderLess, isTextBox, isPassword, error, isTitle, editable = true, ...otherProps } =
     props;
   const [show, setShow] = useState(false);
   return (
@@ -33,7 +33,7 @@ const Input = forwardRef(function MyInput(
         style={[
           styles.inputContainer,
           borderLess ? styles.borderNone : null,
-          !editable ? { opacity: 0.5 } : null,
+          !editable ? { opacity: 0.7 } : null,
         ]}>
         <View style={styles.innerView}>
           <TextInput
@@ -81,7 +81,7 @@ export default Input;
 const styles = StyleSheet.create({
   inputContainer: {
     borderColor: '#F2F2F2',
-    borderRadius: 10,
+    borderRadius: 6,
     borderWidth: 1,
     marginBottom: 0,
   },
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     borderWidth: 0,
-    paddingVertical: Platform.OS === 'android' ? 12 : 16,
+    paddingVertical: Platform.OS === 'android' ? 10 : 16,
     fontSize: 16,
     fontFamily: 'Inter-300',
     color: '#FFFFFF',
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
   borderNone: {
     borderWidth: 0,
-    backgroundColor: '#14141D',
+    backgroundColor: '#1C1C29',
   },
   titleText: {
     fontSize: 15,

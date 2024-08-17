@@ -56,7 +56,7 @@ export default function CustomDatePicker({
           <DatePicker
             onDateChange={date => handleConfirm(date)}
             options={{
-              backgroundColor: '#14141D',
+              backgroundColor: '#1C1C29',
               textHeaderColor: '#FFCA3A',
               textDefaultColor: '#FFFFFF',
               selectedTextColor: '#101017',
@@ -78,7 +78,7 @@ export default function CustomDatePicker({
 const styles = StyleSheet.create({
   inputContainer: {
     borderColor: '#F2F2F2',
-    borderRadius: 10,
+    borderRadius: 6,
     borderWidth: 1,
     marginBottom: 0,
   },
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   },
   borderNone: {
     borderWidth: 0,
-    backgroundColor: '#14141D',
+    backgroundColor: '#1C1C29',
   },
   titleText: {
     fontSize: 15,

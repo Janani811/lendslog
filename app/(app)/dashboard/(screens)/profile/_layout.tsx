@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   profileContainer: {
     width: 120,
     height: 120,
-    backgroundColor: '#FFCA3A',
+    backgroundColor: '#323448',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

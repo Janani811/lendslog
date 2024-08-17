@@ -34,7 +34,7 @@ const LendsCard = ({
   return (
     <View
       style={{
-        backgroundColor: '#14141D',
+        backgroundColor: '#1C1C29',
         width: '100%',
         borderRadius: 10,
         marginTop: 20,
@@ -95,18 +95,18 @@ const LendsCard = ({
       </View>
       <View style={styles.weeksStyles}>
         <View style={styles.weekSubContainer}>
-          <Text style={[styles.subText, { marginRight: 6, color: 'rgba(255, 200, 58, 0.84)' }]}>
+          <Text style={[styles.subText, { marginRight: 6, color: '#77ffc4' }]}>
             Paid weeks :
           </Text>
-          <Text style={[styles.subText, { fontFamily: 'Inter-700', color: 'rgba(255, 200, 58, 0.84)' }]}>
+          <Text style={[styles.subText, { fontFamily: 'Inter-700', color: '#77ffc4' }]}>
             {ld_paid_weeks}/{ld_total_weeks_or_month}
           </Text>
         </View>
         <View style={styles.weekSubContainer}>
-          <Text style={[styles.subText, { marginRight: 6, color: 'rgba(0, 176, 176, 1)' }]}>
+          <Text style={[styles.subText, { marginRight: 6, color: '#d9de56' }]}>
             Pending weeks :
           </Text>
-          <Text style={[styles.subText, { fontFamily: 'Inter-700', color: 'rgba(0, 176, 176, 1)' }]}>
+          <Text style={[styles.subText, { fontFamily: 'Inter-700', color: '#d9de56' }]}>
             {ld_pending_weeks}/{ld_total_weeks_or_month}
           </Text>
         </View>
@@ -119,7 +119,7 @@ const LendsCard = ({
         )}
         <Link
           href={{
-            pathname: '/dashboard/lends/[id]',
+            pathname: '/dashboard/[id]',
             params: { id: ld_id },
           }}
           asChild>

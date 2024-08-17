@@ -106,7 +106,7 @@ const MobileVerify = () => {
             onPress={verify}
             disabled={otpVerifyLoading || !otpValidation(otp)}>
             {otpVerifyLoading ? (
-              <ActivityIndicator animating color={'#14141D'} style={styles.loader} />
+              <ActivityIndicator animating color={'#1C1C29'} style={styles.loader} />
             ) : null}
             <Text style={[styles.title, otpVerifyLoading ? styles.textDisable : {}]}>Verify</Text>
           </TouchableOpacity>
@@ -124,7 +124,7 @@ const MobileVerify = () => {
               }}>
               <View
                 style={{
-                  backgroundColor: '#14141D',
+                  backgroundColor: '#1C1C29',
                   width: width - 60,
                   borderRadius: 10,
                   paddingVertical: 30,

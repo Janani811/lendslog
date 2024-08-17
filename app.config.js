@@ -10,7 +10,7 @@ export default {
     "splash": {
       "image": "./assets/images/app-splash-screen-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#0D0D12"
+      "backgroundColor": "#060609"
     },
     "ios": {
       "supportsTablet": true
@@ -19,7 +19,7 @@ export default {
       "googleServicesFile": process.env.GOOGLE_SERVICES_JSON,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#0D0D12"
+        "backgroundColor": "#060609"
       },
       "package": "com.sachinelavarasan.lendslog"
     },

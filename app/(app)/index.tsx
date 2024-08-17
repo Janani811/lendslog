@@ -16,7 +16,7 @@ const StartPage = () => {
 
   if(isAuthenticateLoading && !user){
     return (
-      <View style={{ flex: 1, justifyContent: 'center', backgroundColor:'#0D0D12' }}>
+      <View style={{ flex: 1, justifyContent: 'center', backgroundColor:'#060609' }}>
         <ActivityIndicator size="large" color="#FFCA3A" />
       </View>
     );
@@ -25,7 +25,7 @@ const StartPage = () => {
   return <Redirect href="/(auth)/login" />;
 
   if(!isAuthenticateLoading && user)
-  return <Redirect href="dashboard" />;
+  return <Redirect href="dashboard/(screens)" />;
 
   return null;
 

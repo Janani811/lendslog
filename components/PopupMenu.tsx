@@ -31,7 +31,8 @@ const PopupMenu = ({ actions }: PopupMenuProps) => {
       <Modal
         isVisible={modalVisible && actions.length > 0}
         onBackdropPress={() => closeMenu()}
-        animationIn="slideInUp"
+        animationIn="fadeIn"
+        animationOut="fadeOut"
         backdropOpacity={0}
        
       >
@@ -73,13 +74,13 @@ const styles = StyleSheet.create({
   menu: {
     width: 200,
     padding: 10,
-    backgroundColor: '#14141D',
+    backgroundColor: '#1C1C29',
     borderRadius: 6,
     alignItems: 'center',
   },
   menuItem: {
     width: '100%',
-    backgroundColor: '#0D0D12',
+    backgroundColor: '#060609',
     borderRadius: 6,
     display: 'flex',
     gap: 10,
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
   },
   menuItemText: { fontSize: 16, color: '#FFFFFF', fontFamily: 'Inter-500' },
   isSelected: {
-    backgroundColor: '#14141D',
+    backgroundColor: '#1C1C29',
     borderRadius: 30,
   },
 });
