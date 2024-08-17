@@ -1,16 +1,3 @@
-import CustomCheckBox from '@/components/CustomCheckBox';
-import { CustomSelectInput } from '@/components/CustomSelectInput';
-import DueCard from '@/components/DueCard';
-import HeaderWithCount from '@/components/HeaderWithCount';
-import Input from '@/components/Input';
-import SafeAreaViewComponent from '@/components/SafeAreaView';
-import Spacer from '@/components/Spacer';
-import { ThemedView } from '@/components/ThemedView';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { edit, setCurrentLend, setError } from '@/redux/slices/lends/lendsSlice';
-import { suretyType } from '@/utils/common-data';
-import { EditLendsSchemaType, EditLendsSchema, lendsSchemaType } from '@/utils/schema';
-import { IinstallmentTimelines } from '@/utils/types/lends';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useIsFocused } from '@react-navigation/native';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
@@ -29,6 +16,23 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
+
+import CustomCheckBox from '@/components/CustomCheckBox';
+import { CustomSelectInput } from '@/components/CustomSelectInput';
+import DueCard from '@/components/DueCard';
+import HeaderWithCount from '@/components/HeaderWithCount';
+import Input from '@/components/Input';
+import SafeAreaViewComponent from '@/components/SafeAreaView';
+import Spacer from '@/components/Spacer';
+import { ThemedView } from '@/components/ThemedView';
+
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { edit, setCurrentLend, setError } from '@/redux/slices/lends/lendsSlice';
+
+import { suretyType } from '@/utils/common-data';
+import { EditLendsSchemaType, EditLendsSchema, lendsSchemaType } from '@/utils/schema';
+import { IinstallmentTimelines } from '@/utils/types/lends';
 
 export default function DetailsScreen(props:any) {
   const { id } = useLocalSearchParams();
@@ -104,6 +108,10 @@ export default function DetailsScreen(props:any) {
     if (currentLend?.ld_id)
       dispatch(
         edit(data, currentLend?.ld_id, lend => {
+          Toast.show({
+            type: 'success', 
+            text1: 'Lend added successfully!',
+          });
           dispatch(setError(null));
           resetForm(lend);
         })

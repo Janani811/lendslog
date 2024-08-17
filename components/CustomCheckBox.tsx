@@ -12,6 +12,7 @@ interface CustomCheckBoxProps {
   textStyle?: StyleProp<TextProps>;
   onChange: (checked: boolean) => void;
   isChecked: boolean;
+  size?: number;
 }
 
 export default function CustomCheckBox({
@@ -20,10 +21,11 @@ export default function CustomCheckBox({
   fillColor,
   onChange,
   isChecked,
+  size
 }: CustomCheckBoxProps) {
   return (
     <BouncyCheckbox
-      size={24}
+      size={size || 24}
       fillColor={fillColor}
       unFillColor="transparent"
       text={label}

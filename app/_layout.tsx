@@ -1,13 +1,17 @@
 import 'react-native-reanimated';
+import { useEffect } from 'react';
 import { Slot } from 'expo-router';
 import { Provider } from 'react-redux';
 import { LogBox } from 'react-native';
 
 import { store } from '@/redux/store';
-import NetworkInfoModal from '@/components/NetworkInfoModal';
-import { requestUserPermission } from '@/utils/notification-service';
-import { useEffect } from 'react';
 import { FirebaseProvider } from '@/contexts/firebase-context';
+
+import NetworkInfoModal from '@/components/NetworkInfoModal';
+import ToastMessage from '@/components/ToastMessage';
+
+import { requestUserPermission } from '@/utils/notification-service';
+
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
@@ -25,6 +29,7 @@ export default function RootLayout() {
     <FirebaseProvider>
       <Provider store={store}>
         <Slot />
+        <ToastMessage />
         <NetworkInfoModal />
       </Provider>
     </FirebaseProvider>

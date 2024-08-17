@@ -30,6 +30,7 @@ import { add, setError } from '@/redux/slices/lends/lendsSlice';
 import { lendsSchema, lendsSchemaType } from '@/utils/schema';
 import { interestList, paymentTerms, suretyType } from '@/utils/common-data';
 import CustomDatePicker from '@/components/CustomDatePicker';
+import Toast from 'react-native-toast-message';
 
 export default function AddLends() {
   const dispatch = useAppDispatch();
@@ -76,6 +77,10 @@ export default function AddLends() {
   const onSubmit = (data: lendsSchemaType) => {
     dispatch(
       add(data, () => {
+        Toast.show({
+          type: 'success', 
+          text1: 'Lend added successfully!',
+        });
         reset();
         dispatch(setError(null));
         router.replace('/dashboard/lends');
