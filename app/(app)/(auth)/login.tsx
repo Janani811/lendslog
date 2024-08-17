@@ -68,7 +68,7 @@ export default function SignIn() {
         reset();
         dispatch(setError(null));
         dispatch(enableNotificationToken());
-        router.replace('/dashboard');
+        router.replace('/dashboard/(screens)');
       })
     );
   };

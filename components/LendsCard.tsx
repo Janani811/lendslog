@@ -119,7 +119,7 @@ const LendsCard = ({
         )}
         <Link
           href={{
-            pathname: '/dashboard/lends/[id]',
+            pathname: '/dashboard/[id]',
             params: { id: ld_id },
           }}
           asChild>

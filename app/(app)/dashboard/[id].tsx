@@ -13,8 +13,8 @@ import { EditLendsSchemaType, EditLendsSchema, lendsSchemaType } from '@/utils/s
 import { IinstallmentTimelines } from '@/utils/types/lends';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useIsFocused } from '@react-navigation/native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import {
   View,
@@ -30,14 +30,14 @@ import {
   Image,
 } from 'react-native';
 
-export default function DetailsScreen() {
+export default function DetailsScreen(props:any) {
   const { id } = useLocalSearchParams();
+  const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const isFocused = useIsFocused();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { allLends, currentLend, isLoading, error } = useAppSelector(state => state.lends);
-
   const {
     control,
     handleSubmit,
@@ -145,7 +145,11 @@ export default function DetailsScreen() {
                 </View>
               )}
               <View style={styles.header}>
-                <Text style={styles.label}>Edit Lend Details</Text>
+                <Text style={styles.label} onPress={()=>{
+                  if(router.canGoBack()){
+                    router.back();
+                  }
+                }}>Edit Lend Details</Text>
                 <View
                   style={{
                     display: 'flex',
